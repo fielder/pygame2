@@ -1,0 +1,25 @@
+Another pygame test, this time using a more direct pixel access, rather
+than going through a numpy array. Here, we give the C code a traditional
+contiguous memory buffer to draw on.
+
+The only issue with the approach implemented here is the python code
+allocates a middle-man draw buffer for the C code to draw onto. Ideally
+we could give the C code direct access to the SDL surfaces' scanlines.
+It can surely be done, just need to figure out how to pull the pointer
+to the surface's pixels and get it down to the C code.
+
+Note that a lot of this direct buffer stuff doesn't hide the surface
+pitch away at all, so we still need to mind it when accessing the
+surface's pixels.
+
+When running, hit "f" to show the framerate. Escape to quit.
+
+Requirements:
+  pygame
+
+Build:
+  gcc -c -Wall -O2 -fPIC c_drawer.c
+  gcc -shared c_drawer.o -o c_drawer.so
+
+Run:
+  python pyg_c.py
